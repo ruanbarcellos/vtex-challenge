@@ -1,0 +1,53 @@
+<h2>Dev Shop</h2>
+
+<div class="row">
+    <div class="col s12">
+        <form onsubmit="return false;" ng-submit="addDeveloper();">
+            <h4>Add a Developer</h4>
+            <div class="row">
+                <div class="input-field col s4">
+                    <i class="mdi-social-person large prefix"></i>
+                    <input placeholder="Name" type="text" class="validate" ng-model="newDeveloper.name">
+                </div>
+                <div class="input-field col s6">
+                    <i class="mdi-editor-attach-money prefix"></i>
+                    <input placeholder="Price" type="text" class="validate" ng-model="newDeveloper.price"
+                    mask="999.99" mask-watch="true">
+                </div>
+            </div>
+            <button class="btn" type="submit" name="action">Add
+                <i class="large mdi-action-add-shopping-cart right"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col s12">
+        <h4>Cart</h4> <span> total: {{'600.00' | currency: 'R$ '}}</span>
+
+        <table class="responsive-table">
+            <thead>
+                <tr>
+                    <th data-field="name">Name</th>
+                    <th data-field="price">Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="developer in cart.developers">
+                    <td>{{developer.name}}</td>
+                    <td>{{developer.price | currency: 'R$ '}}</td>
+                    <td>
+                        <button class="btn red" ng-click="removeDeveloper(developer.id)">
+                            <i class="large mdi-action-highlight-remove"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
