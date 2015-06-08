@@ -2,22 +2,24 @@
 
 <div class="row">
     <div class="col s12">
-        <form onsubmit="return false;" ng-submit="addDeveloper();">
+        <form onsubmit="return false;" ng-submit="addToCart();" novalidate>
             <h4>Add a Developer</h4>
             <div class="row">
                 <div class="input-field col s4">
                     <i class="mdi-social-person large prefix"></i>
-                    <input placeholder="Name" type="text" class="validate" ng-model="newDeveloper.name">
+                    <input placeholder="Name" type="text" class="validate" ng-model="newDeveloper.name" required>
                 </div>
-                <div class="input-field col s6">
+                <div class="input-field col s4">
                     <i class="mdi-editor-attach-money prefix"></i>
-                    <input placeholder="Price" type="text" class="validate" ng-model="newDeveloper.price"
-                    mask="999.99" mask-watch="true">
+                    <input placeholder="Price" type="text" class="validate" ng-model="newDeveloper.price" mask="###.#99,99" mask-reverse="true" mask-watch="true" required>
+                </div>
+                <div class="input-field col s4">
+                    <button class="btn" type="submit" name="action">Add
+                        <i class="large mdi-action-add-shopping-cart right"></i>
+                    </button>
                 </div>
             </div>
-            <button class="btn" type="submit" name="action">Add
-                <i class="large mdi-action-add-shopping-cart right"></i>
-            </button>
+
         </form>
     </div>
 </div>
@@ -41,7 +43,7 @@
                     <td>{{developer.name}}</td>
                     <td>{{developer.price | currency: 'R$ '}}</td>
                     <td>
-                        <button class="btn red" ng-click="removeDeveloper(developer.id)">
+                        <button class="btn red" ng-click="removeFromCart(developer.id)">
                             <i class="large mdi-action-highlight-remove"></i>
                         </button>
                     </td>

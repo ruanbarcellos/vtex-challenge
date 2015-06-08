@@ -4,8 +4,10 @@ var app = angular.module('developerShopApp', ['ngAnimate', 'ngRoute'])
     $routeProvider
         .when('/', {
             templateUrl: 'views/home.html',
-            controller: 'HomeController',
-            title: 'Início'
+            controller: 'HomeController'
+        }).when('/payment-confirmation', {
+            templateUrl: 'views/paymentConfirmation.html',
+            controller: 'DummyController'
         }).when('/404', {
             templateUrl: 'views/404.html',
             controller: 'DummyController'
@@ -105,34 +107,49 @@ var app = angular.module('developerShopApp', ['ngAnimate', 'ngRoute'])
 })
 
 
-.controller('DummyController', function ($scope) {})
-
-.controller('HomeController', function ($scope, $http) {
-    $scope.cart = {
-        id: 1,
-        developers: [{
-            id: 1,
-            name: 'Developer 1',
-            price: 100.00
-    }, {
-            id: 2,
-            name: 'Developer 2',
-            price: 200.00
-    }, {
-            id: 3,
-            name: 'Developer 3',
-            price: 300.00
-    }]
-    };
-
-    $scope.addDeveloper = function () {
-        $scope.cart.developers.push({
-            name: $scope.newDeveloper.name,
-            price: $scope.newDeveloper.price
-        });
-
-        $scope.newDeveloper = {};
+.controller('DummyController', function ($scope, $location) {
+    $scope.backToCart = function () {
+        $location.path('/');
     };
 })
 
-;
+.controller('HomeController', function ($scope, $http) {
+            $scope.cart = {
+                id: 1,
+                developers: [{
+                        $scope.cart.developers.indexOf(
+                            id: 1,
+                            name: 'Developer 1',
+                            price: 100.00
+                        }, {
+                            id: 2,
+                            name: 'Developer 2',
+                            price: 200.00
+                        }, {
+                            id: 3,
+                            name: 'Developer 3',
+                            price: 300.00
+                        }]
+                };
+
+                $scope.addToCart = function () {
+                    $scope.cart.developers.push({
+                        name: $scope.newDeveloper.name,
+                        price: $scope.newDeveloper.price
+                    });
+
+                    $scope.newDeveloper = {};
+                };
+
+                $scope.removeFromCart = function (developerId) {
+                    var developerIndex = $scope.cart.developers.filter(function (developer, index) {
+                        if (developer.id == developerId) {
+                            return index;
+                        }
+                    });
+
+                    $scope.cart.developers.splice(developerIndex, 1);
+                };
+            })
+
+        ;

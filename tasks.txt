@@ -1,0 +1,23 @@
+1- Popular a lista de desenvolvedores a partir de uma organização do GitHub.
+Todas as outras tarefas exigem que a lista de desenvolvedores esteja preenchida, portanto esta deve ser a primeira tarefa a ser executada;
+
+2- Determinar o preço do desenvolvedor a partir de informações do seu perfil do GitHub, como por exemplo: followers, repos, stars, commits, etc.
+Uma vez que a lista de desenvolvedores está preenchida, devemos estipular o preço, afinal o preço é um fator decisivo na hora da compra.
+
+3- Substituir os inputs de texto por uma lista de desenvolvedores com nome, foto, preço e um botão de "Adicionar ao carrinho".
+Esta alteração pode facilitar a escolha dos desenvolvedores
+
+4- Criar paginação para a lista de desenvolvedores.
+Com a exibição por lista dos desenvolvedores, é natural que uma paginação seja necessária, afinal com muitos desenvolvedores a tela pode ficar muito díficil de navegar.
+
+5- Adicionar um botão de "comprar" que leva o usuário a uma página de pedido confirmado.
+Por se tratar de um e-commerce, é preciso efetuar a compra, como a tela já está populada com os desenvolvedores e o carrinho com o total do pedido, o próximo passo é efetuar a compra.
+
+7- Permitir a escolha de quantidade de horas contratadas de cada desenvolvedor.
+[TODO: justificar]
+
+8 Permitir a adição de um cupom de desconto que altera o preço total da compra. Utilize o código "SHIPIT".
+O cupom de desconto não é tão importante para efetuar a compra online, portanto esta pode ser a última tarefa;
+
+6- Melhorar a visualização do desenvolvedor no carrinho mostrando mais informações.
+Com todo o processo de compra implementado, podemos trabalhar em mudanças visuais que ajudem o usuário.
