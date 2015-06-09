@@ -1,5 +1,9 @@
-﻿using DeveloperShop.Domain.Entity;
+﻿using DeveloperShop.DependencyInjection;
+using DeveloperShop.Domain.Entity;
+using DeveloperShop.Domain.Provider;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace DeveloperShop.API.Controllers
@@ -8,16 +12,16 @@ namespace DeveloperShop.API.Controllers
     {
         // GET: api/Developer
         [HttpGet]
-        public IEnumerable<Developer> Get()
+        public async Task<IEnumerable<Developer>> Get()
         {
-            return null;
+            return await DependencyInjectionContainer.Resolve<IGitHubProvider>().GetDevelopers();
         }
 
         // GET: api/Developer/5
         [HttpGet]
-        public string Get(int id)
+        public async Task<Developer> Get(String id)
         {
-            return null;
+            return await DependencyInjectionContainer.Resolve<IGitHubProvider>().GetDeveloper(id);
         }
     }
 }

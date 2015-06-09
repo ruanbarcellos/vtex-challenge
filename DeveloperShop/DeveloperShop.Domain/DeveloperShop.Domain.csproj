@@ -39,14 +39,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entity\Cart.cs" />
+    <Compile Include="DTO\OrderDTO.cs" />
+    <Compile Include="Entity\Order.cs" />
     <Compile Include="Entity\Developer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Provider\IGitHubProvider.cs" />
+    <Compile Include="Repository\IOrderRepository.cs" />
+    <Compile Include="Service\OrderService.cs" />
+    <Compile Include="Specification\ISpecification.cs" />
+    <Compile Include="Specification\OrderSpecification\OrderMinimalAmountSpecification.cs" />
+    <Compile Include="Specification\OrderSpecification\OrderMinimalDeveloperSpecification.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Repository\" />
-    <Folder Include="Service\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

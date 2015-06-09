@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeveloperShop.Infrastructur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeveloperShop.API", "DeveloperShop.API\DeveloperShop.API.csproj", "{62815834-6A73-458C-8B21-59DBA9D6C1C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeveloperShop.DependencyInjection", "DeveloperShop.DependencyInjection\DeveloperShop.DependencyInjection.csproj", "{05DC139A-8F58-4A26-BFF2-8037276AFF88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,8 +29,15 @@ Global
 		{62815834-6A73-458C-8B21-59DBA9D6C1C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62815834-6A73-458C-8B21-59DBA9D6C1C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62815834-6A73-458C-8B21-59DBA9D6C1C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05DC139A-8F58-4A26-BFF2-8037276AFF88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05DC139A-8F58-4A26-BFF2-8037276AFF88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05DC139A-8F58-4A26-BFF2-8037276AFF88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05DC139A-8F58-4A26-BFF2-8037276AFF88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
 	EndGlobalSection
 EndGlobal
