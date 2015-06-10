@@ -1,5 +1,7 @@
 var app = angular.module('developerShopApp', ['ngAnimate', 'ngRoute'])
 
+.value('apiUrl', 'http://10.0.0.186/DeveloperShop.Api')
+
 .config(function ($routeProvider, $provide) {
     $routeProvider
         .when('/', {
@@ -113,43 +115,34 @@ var app = angular.module('developerShopApp', ['ngAnimate', 'ngRoute'])
     };
 })
 
-.controller('HomeController', function ($scope, $http) {
-            $scope.cart = {
-                id: 1,
-                developers: [{
-                        $scope.cart.developers.indexOf(
-                            id: 1,
-                            name: 'Developer 1',
-                            price: 100.00
-                        }, {
-                            id: 2,
-                            name: 'Developer 2',
-                            price: 200.00
-                        }, {
-                            id: 3,
-                            name: 'Developer 3',
-                            price: 300.00
-                        }]
-                };
+.controller('HomeController', function ($scope, $http, apiUrl) {
+    $scope.organization = "";
+    $scope.cart = [];
 
-                $scope.addToCart = function () {
-                    $scope.cart.developers.push({
-                        name: $scope.newDeveloper.name,
-                        price: $scope.newDeveloper.price
-                    });
+    $scope.setOrganization = function (organization) {
+        $scope.organization = organization;
+    };
 
-                    $scope.newDeveloper = {};
-                };
+    $scope.addToCart = function (developer) {
+        $scope.cart.push(developer);
+    };
 
-                $scope.removeFromCart = function (developerId) {
-                    var developerIndex = $scope.cart.developers.filter(function (developer, index) {
-                        if (developer.id == developerId) {
-                            return index;
-                        }
-                    });
+    $scope.removeFromCart = function (developerToRemove) {
+        $scope.cart.splice($scope.cart.developers.indexOf(developerToRemove), 1);
+    };
 
-                    $scope.cart.developers.splice(developerIndex, 1);
-                };
-            })
+    $scope.$watch('organization', function (newValue) {
+        if (newValue) {
+            alert(newValue);
 
-        ;
+            //            $http.get(apiUrl + 'Developer/' + newValue)
+            //                .success(function (data) {
+            //                    $scope.developers = data;
+            //                }).error(function () {
+            //                    Materialize.toast('Ocorreu um erro ao obter os desenvolvedores', 3000, 'rounded');
+            //                });
+        }
+    });
+})
+
+;
