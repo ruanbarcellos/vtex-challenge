@@ -1,148 +1,160 @@
-var app = angular.module('developerShopApp', ['ngAnimate', 'ngRoute'])
+var app = angular.module('developerShopApp', ['ngRoute', 'ngLocale', 'ui.bootstrap'])
 
-.value('apiUrl', 'http://10.0.0.186/DeveloperShop.Api')
+        .value('apiUrl', 'http://localhost/DeveloperShop.Api/api/')
 
-.config(function ($routeProvider, $provide) {
-    $routeProvider
-        .when('/', {
-            templateUrl: 'views/home.html',
-            controller: 'HomeController'
-        }).when('/payment-confirmation', {
-            templateUrl: 'views/paymentConfirmation.html',
-            controller: 'DummyController'
-        }).when('/404', {
-            templateUrl: 'views/404.html',
-            controller: 'DummyController'
-        }).otherwise({
-            templateUrl: 'views/404.html',
-            controller: 'DummyController'
-        });
-})
+        .config(function ($routeProvider, $provide) {
+            $routeProvider
+                .when('/', {
+                    templateUrl: 'views/home.html',
+                    controller: 'HomeController'
+                }).when('/payment-confirmation', {
+                    templateUrl: 'views/paymentConfirmation.html',
+                    controller: 'DummyController'
+                }).when('/404', {
+                    templateUrl: 'views/404.html',
+                    controller: 'DummyController'
+                }).otherwise({
+                    templateUrl: 'views/404.html',
+                    controller: 'DummyController'
+                });
+        })
 
-.directive('btn', function () {
-    Waves.init();
-    return {
-        restrict: 'C',
-        link: function ($scope, $element) {
-            $element.addClass('waves-effect');
+        .directive('btn', function () {
+            Waves.init();
+            return {
+                restrict: 'C',
+                link: function ($scope, $element) {
+                    $element.addClass('waves-effect');
 
-            if (!$element.hasClass('btn-flat')) {
-                $element.addClass('waves-light');
+                    if (!$element.hasClass('btn-flat')) {
+                        $element.addClass('waves-light');
+                    }
+
+                    if ($element.hasClass('btn-round')) {
+                        $element.addClass('waves-circle waves-float');
+                    }
+
+                    Waves.attach($element[0]);
+                }
+            };
+        })
+
+        .filter('pager', function () {
+            return function (input, start) {
+                var pagedItems;
+
+                if (input) {
+                    start = +start; //parse to int
+                    pagedItems = input.slice(start);
+                }
+
+                return input ? pagedItems : [];
             }
+        })
 
-            if ($element.hasClass('btn-round')) {
-                $element.addClass('waves-circle waves-float');
-            }
+        .factory("$pagination", [
+            function () {
+                return {
+                    // Utilização na view:
+                    // ng-repeat="item in itensFiltrados = (Itens | filter:textoDaBusca) | pager:(paginaAtual-1)*itensPorPagina | limitTo:itensPorPagina"
+                    pageItems: function (itemsToPage, $scope, $timeout) {
+                        function updateTotalPages() {
+                            $scope.totalPages = Math.ceil(itemsToPage.length / $scope.itemsPerPage);
+                        }
 
-            Waves.attach($element[0]);
-        }
-    };
-})
+                        $scope.currentPage = 1;
+                        $scope.Items = itemsToPage;
+                        $scope.totalItems = itemsToPage.length;
+                        $scope.itemsPerPage = 5;
+                        $scope.lastIndexInThisPage = $scope.currentPage * $scope.itemsPerPage;
+                        $scope.firstIndexInThisPage = ($scope.currentPage - 1) * $scope.itemsPerPage;
 
-.directive('mask', function () {
-    return {
-        restrict: 'A',
-        require: 'ngModel',
-        compile: function () {
-            return function (scope, element, attrs, controller) {
+                        updateTotalPages();
 
-                if (attrs.maskWatch) {
-                    scope.$watch(attrs.ngModel, function () {
-                        uninitialize();
-                        initialize();
+                        $scope.showPagination = function () {
+                            return $scope.totalItems && $scope.totalItems > $scope.itemsPerPage;
+                        };
+
+                        $scope.setPage = function (pageNumber) {
+                            $route.currentPage = pageNumber;
+                        };
+
+                        $scope.filter = function () {
+                            $timeout(function () {
+                                updateTotalPages();
+                                $scope.totalItems = $scope.filteredItems.length;
+                            });
+                        };
+                    }
+                };
+            }])
+
+        .controller('DummyController', function ($scope, $location) {
+            $scope.backToCart = function () {
+                $location.path('/');
+            };
+        })
+
+        .controller('HomeController', function ($scope, $http, $timeout, $pagination, $location, apiUrl) {
+            $scope.organization = "";
+            $scope.cart = [];
+
+            var showProgress = function () {
+                $scope.loading = true;
+            };
+
+            var hideProgress = function () {
+                $scope.loading = false;
+            };
+
+            $scope.calculateCartAmount = function () {
+                var cartAmount = 0;
+                angular.forEach($scope.cart, function (developer) {
+                    cartAmount += developer.price;
+                });
+
+                return cartAmount;
+            };
+
+            $scope.setOrganization = function (organization) {
+                $scope.organization = organization;
+            };
+
+            $scope.addToCart = function (developer) {
+                $scope.cart.push(developer);
+            };
+
+            $scope.removeFromCart = function (developer) {
+                var index = $scope.cart.indexOf(developer);
+                $scope.cart.splice(index, 1);
+            };
+
+            $scope.buy = function () {
+
+                if ($scope.cart && $scope.cart.length >= 1) {
+                    $http.post(apiUrl + '/Order', {
+                        developers: $scope.cart,
+                        amount: $scope.calculateCartAmount()
+                    }).success(function () {
+                        $location.path('payment-confirmation');
                     });
                 }
+            };
 
-                var maskProcessed = false;
-                var eventsBound = false;
-                attrs.$observe('mask', initialize);
-
-                function initialize() {
-
-                    if (maskProcessed) {
-                        uninitialize()
-                    }
-
-                    maskProcessed = true;
-
-                    var maskConfig = {};
-
-                    if (attrs.maskReverse) {
-                        maskConfig.reverse = attrs.maskReverse == "true";
-                    }
-
-                    $(element).mask(attrs.mask, maskConfig);
-                    bindEvents();
+            $scope.$watch('organization', function (newValue) {
+                if (newValue) {
+                    showProgress();
+                    $http.get(apiUrl + 'Developer/GetFromOrganization/' + newValue)
+                        .success(function (data) {
+                            $scope.developers = data;
+                            $pagination.pageItems($scope.developers, $scope, $timeout);
+                        }).error(function () {
+                            Materialize.toast('Ocorreu um erro ao obter os desenvolvedores', 3000, 'rounded');
+                        }).finally(function () {
+                            hideProgress();
+                        });
                 }
+            });
+        })
 
-                function uninitialize() {
-                    maskProcessed = false;
-
-                    $(element).unmask();
-                    if (eventsBound) {
-                        eventsBound = false;
-                        unbindEvents();
-                    }
-                }
-
-                function bindEvents() {
-                    eventsBound = true;
-                    element.on('input keyup click focus change', eventHandler);
-                }
-
-                function unbindEvents() {
-                    element.unbind('input', eventHandler);
-                    element.unbind('keyup', eventHandler);
-                    element.unbind('click', eventHandler);
-                    element.unbind('focus', eventHandler);
-                    element.unbind('change', eventHandler);
-                }
-
-                function eventHandler() {
-                    scope.$evalAsync(function () {
-                        controller.$setViewValue($(element).cleanVal());
-                    });
-                }
-            }
-        }
-    };
-})
-
-
-.controller('DummyController', function ($scope, $location) {
-    $scope.backToCart = function () {
-        $location.path('/');
-    };
-})
-
-.controller('HomeController', function ($scope, $http, apiUrl) {
-    $scope.organization = "";
-    $scope.cart = [];
-
-    $scope.setOrganization = function (organization) {
-        $scope.organization = organization;
-    };
-
-    $scope.addToCart = function (developer) {
-        $scope.cart.push(developer);
-    };
-
-    $scope.removeFromCart = function (developerToRemove) {
-        $scope.cart.splice($scope.cart.developers.indexOf(developerToRemove), 1);
-    };
-
-    $scope.$watch('organization', function (newValue) {
-        if (newValue) {
-            alert(newValue);
-
-            //            $http.get(apiUrl + 'Developer/' + newValue)
-            //                .success(function (data) {
-            //                    $scope.developers = data;
-            //                }).error(function () {
-            //                    Materialize.toast('Ocorreu um erro ao obter os desenvolvedores', 3000, 'rounded');
-            //                });
-        }
-    });
-})
-
-;
+    ;

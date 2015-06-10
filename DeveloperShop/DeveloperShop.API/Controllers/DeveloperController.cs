@@ -8,13 +8,14 @@ using System.Web.Http;
 
 namespace DeveloperShop.API.Controllers
 {
+    [RoutePrefix("api/Developer")]
     public class DeveloperController : ApiController
     {
-        // GET: api/Developer
-        [HttpGet]
-        public async Task<IEnumerable<Developer>> Get()
+        // GET: api/Developer/GitHub
+        [Route("GetFromOrganization/{id}"), HttpGet]
+        public async Task<IEnumerable<Developer>> GetFromOrganization(String id)
         {
-            return await DependencyInjectionContainer.Resolve<IGitHubProvider>().GetDevelopers();
+            return await DependencyInjectionContainer.Resolve<IGitHubProvider>().GetDevelopers(id);
         }
 
         // GET: api/Developer/5

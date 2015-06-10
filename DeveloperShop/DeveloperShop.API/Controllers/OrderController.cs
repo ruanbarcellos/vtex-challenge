@@ -2,6 +2,7 @@
 using DeveloperShop.Domain.DTO;
 using DeveloperShop.Domain.Entity;
 using DeveloperShop.Domain.Repository;
+using DeveloperShop.Domain.Service;
 using System;
 using System.Web.Http;
 
@@ -18,8 +19,10 @@ namespace DeveloperShop.API.Controllers
 
         // POST: api/Order
         [HttpPost]
-        public void Post([FromBody] OrderDTO order)
+        public IHttpActionResult Post([FromBody] OrderDTO order)
         {
+            new OrderService().SaveOrder(order);
+            return Ok();
         }
 
         // DELETE: api/Order/5

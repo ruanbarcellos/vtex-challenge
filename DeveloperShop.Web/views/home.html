@@ -11,43 +11,83 @@
         </select>
     </div>
 </div>
-
-<div class="row">
+<div class="row" ng-hide="loading">
     <div class="col s12">
         <ul class="collection">
-            <li class="collection-item avatar" ng-repeat="developer in developers">
-                <img src="images/yuna.jpg" alt="" class="circle">
+            <li class="collection-item avatar"
+                ng-repeat="developer in Items | pager:(currentPage-1)*itemsPerPage | limitTo:itemsPerPage">
+                <img src="{{developer.avatarUrl}}" alt="" class="circle">
                 <span class="title">{{developer.name}}</span>
+
                 <p>{{developer.price | currency: 'R$ '}}</p>
-                <a href="#!" class="secondary-content"><i class="mdi-action-add-shopping-cart"></i></a>
+                <a href ng-click="addToCart(developer)" class="secondary-content"><i
+                        class="small mdi-action-add-shopping-cart"></i></a>
             </li>
         </ul>
+        <pagination
+                direction-links="true"
+                boundary-links="false"
+                next-text=">"
+                previous-text="<"
+                total-items="totalItems"
+                items-per-page="itemsPerPage"
+                num-pages="totalPages"
+                max-size="10"
+                rotate="false"
+                ng-model="currentPage">
+        </pagination>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col s12">
+        <div ng-show="loading" class="center-align">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="row">
     <div class="col s12">
-        <h4>Cart</h4> <span> total: {{'600.00' | currency: 'R$ '}}</span>
+        <h4>Cart</h4> <span> total: {{calculateCartAmount() | currency}}</span>
         <table class="responsive-table">
             <thead>
-                <tr ng-repeat="developer in cart">
-                    <th data-field="name">Name</th>
-                    <th data-field="price">Price</th>
-                    <th></th>
-                </tr>
+            <tr>
+                <th data-field="name">Name</th>
+                <th data-field="price">Price</th>
+                <th></th>
+            </tr>
             </thead>
-
             <tbody>
-                <tr>
-                    <td>{{developer.name}}</td>
-                    <td>{{developer.price | currency: 'R$ '}}</td>
-                    <td>
-                        <button class="btn red" ng-click="removeFromCart(developer.id)">
-                            <i class="large mdi-action-highlight-remove"></i>
-                        </button>
-                    </td>
-                </tr>
+            <tr ng-repeat="developer in cart">
+                <td>{{developer.name}}</td>
+                <td>{{developer.price | currency: 'R$ '}}</td>
+                <td>
+                    <button class="btn red" ng-click="removeFromCart(developer)">
+                        <i class="large mdi-action-highlight-remove"></i>
+                    </button>
+                </td>
+            </tr>
             </tbody>
+            <tfoot>
+            <tr>
+                <td>
+                    <button class="btn btn-primary" ng-click="buy();">Buy</button>
+                </td>
+            </tr>
+            </tfoot>
         </table>
 
     </div>

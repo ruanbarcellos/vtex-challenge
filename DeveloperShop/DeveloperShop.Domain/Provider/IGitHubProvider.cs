@@ -7,7 +7,7 @@ namespace DeveloperShop.Domain.Provider
 {
     public interface IGitHubProvider
     {
-        Task<IEnumerable<Developer>> GetDevelopers();
+        Task<IEnumerable<Developer>> GetDevelopers(String organization);
         Task<Developer> GetDeveloper(String developerLogin);
     }
 }

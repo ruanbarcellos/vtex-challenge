@@ -50,7 +50,12 @@
     <Compile Include="Specification\OrderSpecification\OrderMinimalAmountSpecification.cs" />
     <Compile Include="Specification\OrderSpecification\OrderMinimalDeveloperSpecification.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DeveloperShop.DependencyInjection\DeveloperShop.DependencyInjection.csproj">
+      <Project>{05dc139a-8f58-4a26-bff2-8037276aff88}</Project>
+      <Name>DeveloperShop.DependencyInjection</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

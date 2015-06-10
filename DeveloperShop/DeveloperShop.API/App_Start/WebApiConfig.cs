@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using Newtonsoft.Json.Serialization;
+using System.Web.Http;
 
 namespace DeveloperShop.API
 {
@@ -7,6 +8,8 @@ namespace DeveloperShop.API
         public static void Register(HttpConfiguration config)
         {
             config.MapHttpAttributeRoutes();
+            config.Filters.Add(new AuthorizeAttribute());
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

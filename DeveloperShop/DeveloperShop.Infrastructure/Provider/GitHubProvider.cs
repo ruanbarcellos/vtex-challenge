@@ -10,18 +10,12 @@ namespace DeveloperShop.Infrastructure.Provider
 {
     public class GitHubProvider : IGitHubProvider
     {
-        //private const String ORGANIZATION = "Angular";
-        //private const String ORGANIZATION = "twbs";
-        //private const String ORGANIZATION = "eellak";
-        private const String ORGANIZATION = "yeoman";
-        //private const String ORGANIZATION = "grunt";
-        //private const String ORGANIZATION = "mpc-hc";
         private const String APPLICATION = "DeveloperShop";
-        private const String ACCESS_TOKEN = "031af671e9bd0a0c42b9a2545c9a505243e6ff01";
+        private const String ACCESS_TOKEN = "2045255ade3a75064c222bbb8aa015cf414dea71";
 
-        public async Task<IEnumerable<Developer>> GetDevelopers()
+        public async Task<IEnumerable<Developer>> GetDevelopers(String organization)
         {
-            var users = await GetUsersFromOrganization();
+            var users = await GetUsersFromOrganization(organization);
 
             return users.Select(user => GetDeveloperFromUser(user));
         }
@@ -31,12 +25,12 @@ namespace DeveloperShop.Infrastructure.Provider
             return GetDeveloperFromUser(await GetUser(developerLogin));
         }
 
-        private async Task<IEnumerable<User>> GetUsersFromOrganization()
+        private async Task<IEnumerable<User>> GetUsersFromOrganization(String organization)
         {
             var github = new GitHubClient(new ProductHeaderValue(APPLICATION));
             github.Credentials = new Credentials(ACCESS_TOKEN);
 
-            var organizationMembers = await github.Organization.Member.GetAllPublic(ORGANIZATION);
+            var organizationMembers = await github.Organization.Member.GetAllPublic(organization);
 
             IList<User> users = new List<User>();
             foreach (var member in organizationMembers)
@@ -69,7 +63,8 @@ namespace DeveloperShop.Infrastructure.Provider
                 Id = user.Id,
                 Name = String.IsNullOrWhiteSpace(user.Name) ? user.Login : user.Name,
                 PublicRepos = user.PublicRepos,
-                TotalPrivateRepos = user.TotalPrivateRepos
+                TotalPrivateRepos = user.TotalPrivateRepos,
+                Price = (user.Followers + user.Collaborators + user.PublicRepos + user.TotalPrivateRepos) * 2
             };
         }
     }
