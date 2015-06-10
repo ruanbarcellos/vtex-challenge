@@ -13,11 +13,11 @@ Com a exibição por lista dos desenvolvedores, é natural que uma paginação s
 5- Adicionar um botão de "comprar" que leva o usuário a uma página de pedido confirmado.
 Por se tratar de um e-commerce, é preciso efetuar a compra, como a tela já está populada com os desenvolvedores e o carrinho com o total do pedido, o próximo passo é efetuar a compra.
 
+6- Melhorar a visualização do desenvolvedor no carrinho mostrando mais informações.
+Com todo o processo de compra implementado, podemos trabalhar em mudanças visuais que ajudem o usuário.
+
 7- Permitir a escolha de quantidade de horas contratadas de cada desenvolvedor.
-[TODO: justificar]
+Esta alteração exigiria uma restruturação do processo de compra e precificação, uma vez que, até o momento, o preço era gerado a partir de critérios do perfil (quantidade de followers, repositórios, etc).
 
 8 Permitir a adição de um cupom de desconto que altera o preço total da compra. Utilize o código "SHIPIT".
 O cupom de desconto não é tão importante para efetuar a compra online, portanto esta pode ser a última tarefa;
-
-6- Melhorar a visualização do desenvolvedor no carrinho mostrando mais informações.
-Com todo o processo de compra implementado, podemos trabalhar em mudanças visuais que ajudem o usuário.
