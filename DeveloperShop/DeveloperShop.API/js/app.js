@@ -1,7 +1,7 @@
 (function () {
     angular.module('developerShopApp', ['ngRoute', 'ngLocale', 'ui.bootstrap'])
 
-        .value('apiUrl', 'http://10.0.0.186/DeveloperShop.Api/api/')
+        .value('apiUrl', 'http://developershopapi.apphb.com/api/')
 
         .config(function ($routeProvider, $provide) {
             $routeProvider
