@@ -6,7 +6,7 @@ namespace DeveloperShop.API.Controllers
     {
         public ActionResult Index()
         {
-            return RedirectToActionPermanent("Index", "Help", new { Area = "HelpPage" });
+            return View("index.html");
         }
     }
 }
