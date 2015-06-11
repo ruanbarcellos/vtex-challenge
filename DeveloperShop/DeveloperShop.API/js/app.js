@@ -1,21 +1,7 @@
-/*
- <ul class="collection">
- <li class="collection-item avatar"
- ng-repeat="developer in Items | pager:(currentPage-1)*itemsPerPage | limitTo:itemsPerPage">
- <img src="{{developer.avatarUrl}}" alt="" class="circle">
- <span class="title">{{developer.name}}</span>
-
- <p>{{developer.price | currency: 'R$ '}}</p>
- <a href ng-click="addToCart(developer)" class="secondary-content"><i
- class="small mdi-action-add-shopping-cart"></i></a>
- </li>
- </ul>
- */
-
 (function () {
     angular.module('developerShopApp', ['ngRoute', 'ngLocale', 'ui.bootstrap'])
 
-        .value('apiUrl', 'http://developershopapi.apphb.com/api/')
+        .value('apiUrl', 'http://10.0.0.186/DeveloperShop.Api/api/')
 
         .config(function ($routeProvider, $provide) {
             $routeProvider
@@ -34,25 +20,25 @@
                 });
         })
 
-        .directive('btn', function () {
-            Waves.init();
-            return {
-                restrict: 'C',
-                link: function ($scope, $element) {
-                    $element.addClass('waves-effect');
+        //.directive('btn', function () {
+        //    Waves.init();
+        //    return {
+        //        restrict: 'C',
+        //        link: function ($scope, $element) {
+        //            $element.addClass('waves-effect');
 
-                    if (!$element.hasClass('btn-flat')) {
-                        $element.addClass('waves-light');
-                    }
+        //            if (!$element.hasClass('btn-flat')) {
+        //                $element.addClass('waves-light');
+        //            }
 
-                    if ($element.hasClass('btn-round')) {
-                        $element.addClass('waves-circle waves-float');
-                    }
+        //            if ($element.hasClass('btn-round')) {
+        //                $element.addClass('waves-circle waves-float');
+        //            }
 
-                    Waves.attach($element[0]);
-                }
-            };
-        })
+        //            Waves.attach($element[0]);
+        //        }
+        //    };
+        //})
 
         .directive('developerList', function () {
             return {
@@ -158,12 +144,18 @@
             };
 
             $scope.addToCart = function (developer) {
+                $scope.developers.splice($scope.developers.indexOf(developer), 1);
                 $scope.cart.push(developer);
+
+                $pagination.pageItems($scope.developers, $scope, $timeout);
             };
 
             $scope.removeFromCart = function (developer) {
                 var index = $scope.cart.indexOf(developer);
-                $scope.cart.splice(index, 1);
+                $scope.cart.splice(index, 1)
+
+                $scope.developers.push(developer);
+                $pagination.pageItems($scope.developers, $scope, $timeout);
             };
 
             $scope.buy = function () {
@@ -178,16 +170,30 @@
                 }
             };
 
-            showProgress();
-            $http.get(apiUrl + 'Developer/GetFromOrganization/twbs')
+            $scope.$watch('organization', function (newValue) {
+                if (!newValue) {
+                    return;
+                }
+
+                showProgress();
+                $http.get(apiUrl + 'Developer/GetFromOrganization/' + newValue)
                 .success(function (data) {
-                    $scope.developers = data;
+                    $scope.developers = data.filter(function (developer) {
+                        var cartDevelopers = $scope.cart.filter(function (cartDeveloper) {
+                            return cartDeveloper.id == developer.id;
+                        });
+
+                        return !cartDevelopers.length;
+                    });
                     $pagination.pageItems($scope.developers, $scope, $timeout);
                 }).error(function () {
                     Materialize.toast('Ocorreu um erro ao obter os desenvolvedores', 3000, 'rounded');
                 }).finally(function () {
                     hideProgress();
                 });
+            });
+
+
         })
 
     ;

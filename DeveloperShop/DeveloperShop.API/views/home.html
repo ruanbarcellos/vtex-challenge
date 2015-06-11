@@ -1,23 +1,41 @@
 <h2>Dev Shop</h2>
 
-<div class="row" ng-hide="loading">
+<div class="row">
+    <div class="input-field col s12">
+        <select class="browser-default" ng-model="organization" ng-disabled="loading">
+            <option value="" selected disabled>Select an organization</option>
+            <option value="Angular">Angular</option>
+            <option value="twbs">Bootstrap</option>
+            <option value="mpc-hc">Media Player Classic</option>
+            <option value="yeoman">Yeoman</option>
+        </select>
+    </div>
+</div>
+
+<div class="row" ng-show="Items && Items.length && !loading">
     <div id="developerList" class="col s12">
-        <h6>Developer List With ReactJS</h6>
-        <developer-list data="Items"></developer-list>
+        <button class="btn btn-primary" ng-click="showReact = !showReact">Show List With {{showReact ? 'AngularJS' : 'ReactJS'}}</button>
+        <div ng-show="showReact">
+            <h6>Developer List With ReactJS</h6>
+            <developer-list data="Items"></developer-list>
+        </div>
 
-        <h6>Developer List Without ReactJS</h6>
-        <ul class="collection">
-            <li class="collection-item avatar" ng-repeat="developer in Items | pager:(currentPage-1)*itemsPerPage | limitTo:itemsPerPage">
-                <img src="{{developer.avatarUrl}}" alt="" class="circle">
-                <span class="title">{{developer.name}}</span>
+        <div ng-hide="showReact">
+            <h6>Developer List Without ReactJS</h6>
+            <ul class="collection">
+                <li class="collection-item avatar" ng-repeat="developer in Items | pager:(currentPage-1)*itemsPerPage | limitTo:itemsPerPage">
+                    <img src="{{developer.avatarUrl}}" alt="" class="circle">
+                    <span class="title">{{developer.name}}</span>
 
-                <p>{{developer.price | currency: 'R$ '}}</p>
-                <a href ng-click="addToCart(developer)" class="secondary-content"><i
-                        class="small mdi-action-add-shopping-cart"></i></a>
-            </li>
-        </ul>
-        <pagination direction-links="true" boundary-links="false" next-text=">" previous-text="<" total-items="totalItems" items-per-page="itemsPerPage" num-pages="totalPages" max-size="10" rotate="false" ng-model="currentPage">
-        </pagination>
+                    <p>{{developer.price | currency}}</p>
+                    <a href ng-click="addToCart(developer)" class="secondary-content">
+                        <i class="small mdi-action-add-shopping-cart"></i>
+                    </a>
+                </li>
+            </ul>
+            <pagination direction-links="true" boundary-links="false" next-text=">" previous-text="<" total-items="totalItems" items-per-page="itemsPerPage" num-pages="totalPages" max-size="10" rotate="false" ng-model="currentPage">
+            </pagination>
+        </div>
     </div>
 </div>
 <br>
@@ -66,7 +84,7 @@
             <tfoot>
                 <tr>
                     <td>
-                        <button class="btn btn-primary" ng-click="buy();">Buy</button>
+                        <button class="btn btn-primary" ng-click="buy();" ng-disabled="!cart.length">Buy</button>
                     </td>
                 </tr>
             </tfoot>

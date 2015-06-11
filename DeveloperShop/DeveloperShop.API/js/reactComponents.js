@@ -14,21 +14,12 @@ var DeveloperList = React.createClass({
                 className: 'title'
             }, developer.name);
             var developerPrice = React.DOM.p(null, developer.price);
-            var cartIcon = React.DOM.i({
-                className: 'small mdi-action-add-shopping-cart'
-            });
-            var developerBuy = React.DOM.a({
-                className: 'secondary-content',
-                href: '',
-                disabled: ''
-            }, cartIcon);
 
             return (React.DOM.li({
                     className: 'collection-item avatar'
                 }, developerAvatar,
                 developerName,
-                developerPrice,
-                developerBuy));
+                developerPrice));
         });
 
         return (React.DOM.ul({
